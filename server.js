@@ -1,23 +1,32 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const mongoose = require("mongoose");
+const connectDB = require("./config/dbConnection");
 const corsOptions = require("./config/corsOptions");
 const errorHandler = require("./middleware/eventHandler");
-const { logger } = require("./middleware/logger");
+const { logger, logEvents } = require("./middleware/logger");
 const PORT = process.env.PORT || 3500;
 
+// middlewares
 app.use(logger);
-
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors(corsOptions));
 
+// connection to mongoDB => orderDB
+connectDB();
+
 app.use('/', express.static(path.join(__dirname, 'public')));
 
+// server route handlers
 app.use('/', require('./routes/root'));
+app.use('/users', require('./routes/userRoutes'));
 
+// no page found route handler
 app.all('*', (req, res) => {
     res.status(404);
 
@@ -30,6 +39,20 @@ app.all('*', (req, res) => {
     }
 })
 
+// middleware to create error log files
 app.use(errorHandler);
 
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+
+// successfull connection to mongoDB
+mongoose.connection.once('open', () => {
+    console.log(`In ${process.env.NODE_ENV} environment`)
+    console.log('Connected to orderDB');
+    app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+})
+
+// connection error to mongoDB
+mongoose.connection.on("error", err => {
+    console.log(`In ${process.env.NODE_ENV} environment`)
+    logEvents(`${err.no}\t${err.code}\t${err.syscall}\t${err.hostname}`,
+        'mongoErrLog.log')
+})
