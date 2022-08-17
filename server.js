@@ -7,7 +7,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const connectDB = require("./config/dbConnection");
 const corsOptions = require("./config/corsOptions");
-const errorHandler = require("./middleware/eventHandler");
+const errorHandler = require("./middleware/errorHandler");
 const { logger, logEvents } = require("./middleware/logger");
 const PORT = process.env.PORT || 3500;
 
