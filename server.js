@@ -25,6 +25,7 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 // server route handlers
 app.use('/', require('./routes/root'));
 app.use('/users', require('./routes/userRoutes'));
+app.use('/orders', require('./routes/orderRoutes'));
 
 // no page found route handler
 app.all('*', (req, res) => {
