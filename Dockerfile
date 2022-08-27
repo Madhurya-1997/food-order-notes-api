@@ -1,13 +1,10 @@
 FROM node:latest
+ENV NODE_ENV=production
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY package*.json ./
-
+COPY ./package.json ./
 RUN npm install
-
-COPY . .
-
-EXPOSE 3500
+COPY ./ ./
 
 CMD [ "npm", "start" ]

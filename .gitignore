@@ -2,3 +2,5 @@ node_modules
 logs
 .env
 cloud.md
+users.json
+orders.json
