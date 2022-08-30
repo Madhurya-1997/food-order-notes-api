@@ -83,7 +83,7 @@ const updateUser = asyncHandler(async (req, res) => {
     const { id, username, password, roles, active } = req.body;
 
     // confirm request
-    if (!username || !password || !Array.isArray(roles) || !roles.length || typeof active !== 'boolean') {
+    if (!id || !username || !Array.isArray(roles) || !roles.length || typeof active !== 'boolean') {
         return res.status(400).json({
             message: "All request fields are required"
         });
