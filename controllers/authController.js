@@ -38,7 +38,7 @@ const login = asyncHandler(async (req, res) => {
             }
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: '10s' }
+        { expiresIn: '60s' }
     )
     const refreshToken = jwt.sign(
         { 'username': foundUser.username },
@@ -104,7 +104,7 @@ const refresh = (req, res) => {
                     }
                 },
                 process.env.ACCESS_TOKEN_SECRET,
-                { expiresIn: '10s' }
+                { expiresIn: '60s' }
             )
 
             res.status(200).json({ accessToken })
@@ -128,7 +128,6 @@ const logout = (req, res) => {
         secure: true // https
     });
     res.end();
-    res.json({ message: 'Cookies cleared, user logged out !' });
 }
 
 module.exports = {

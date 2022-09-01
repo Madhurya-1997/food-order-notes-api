@@ -9,13 +9,13 @@ const verifyJWT = (req, res, next) => {
         return res.status(403).json({ message: 'Forbidden User' });
     }
 
-    const token = authHeader.split(' ')[1];
+    const accessToken = authHeader.split(' ')[1];
 
-    jwt.verify(token,
-        process.env.REFRESH_TOKEN_SECRET,
-        asyncHandler(async (err, decodedUser) => {
-            req.user = decodedUser.UserInfo.username;
-            req.roles = decodedUser.UserInfo.roles;
+    jwt.verify(accessToken,
+        process.env.ACCESS_TOKEN_SECRET,
+        asyncHandler(async (err, decoded) => {
+            req.user = decoded.UserInfo.username;
+            req.roles = decoded.UserInfo.roles;
             next();
         }))
 }
