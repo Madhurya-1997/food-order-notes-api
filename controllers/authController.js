@@ -27,7 +27,7 @@ const login = asyncHandler(async (req, res) => {
     const passwordMatched = await bcrypt.compare(password, foundUser.password);
 
     if (!passwordMatched) {
-        return res.status(401).json({ message: 'Password does not match. Unauthorized personnel !' })
+        return res.status(401).json({ message: 'Password does not match with username. Login failed !' })
     }
 
     const accessToken = jwt.sign(
