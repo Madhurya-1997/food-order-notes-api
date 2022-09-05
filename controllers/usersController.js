@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
-// const Order = require("../models/order");
+const Order = require("../models/order");
 
 
 
@@ -134,10 +134,10 @@ const deleteUser = asyncHandler(async (req, res) => {
     }
 
     // dont delete the user if they have orders assigned to them
-    // const orders = await Order.find({ user: id });
-    // if (orders?.length) {
-    //     return res.status(400).json({ message: "User has orders assigned to them" })
-    // }
+    const orders = await Order.find({ user: id });
+    if (orders?.length) {
+        return res.status(400).json({ message: "User has orders assigned to them" })
+    }
 
     // find the user to delete
     const user = await User.findById(id);
